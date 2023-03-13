@@ -16,7 +16,7 @@ freq1 = 40; % [Hz] eigenfreq lensassy;
 K02 = (2*pi*freq1)^2 * (M2+M1+M3);
 K12 = 0.2e6; % [N/m]
 K23 = 1.0e6; % [N/m]
-K23 = K12*((((M3)*(freq1*2*pi)^2))/(((M1)*(freq1*2*pi)^2)))
+k23 = K12*((((M3)*(freq1*2*pi)^2))/(((M1)*(freq1*2*pi)^2)))
 
 K = [
       K12 -K12           0;
