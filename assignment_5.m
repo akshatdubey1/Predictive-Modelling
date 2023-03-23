@@ -43,6 +43,13 @@ F_max = 40; %Max force of actuator, N
 t_max = 2e-3; %Fastest speed of max force, s
 
 
+%Calculating the required acceleration
+
+%step
+d_step = 20e-3; %size of step, m
+t_step = 0.2; %time of step, s
+a_step = (2*d_step)/(t_step^2); %acceleration of step m/s^2
+
 
 
 
