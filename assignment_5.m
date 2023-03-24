@@ -50,8 +50,13 @@ t_max = 2e-3; %Fastest speed of max force, s
 
 d_step = 20e-3; %size of step, m
 t_step = 0.1; %time of step, s
+v_step = (d_step)/(t_step); %velocity of step, m/s
 a_step = (d_step)/(t_step^2); %acceleration of step, m/s^2
+%j_step = (d_step)/(t_step^3); %jerk of step, m/s^3
+j_step = 2000;
 
+%jerk profile generation using make3.m
+[t,jd] = make3(d_step,v_step,a_step,j_step);
 
 
 
