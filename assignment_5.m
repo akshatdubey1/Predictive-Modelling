@@ -25,6 +25,8 @@ Kp = (2*pi*f_bw)^2*M2;
 f_d = f_bw/3;
 w_d = 2*pi*f_d;
 T_d = 1/w_d; 
+zeta = 0.008;
+b = zeta*2*sqrt(Kp*M2);
 
 %Defining taming action (N)
 f_t = f_bw*3;
@@ -57,6 +59,15 @@ j_step = 2000;
 
 %jerk profile generation using make3.m
 [t,jd] = make3(d_step,v_step,a_step,j_step);
+
+%q7 error evaluation
+q7_error = load('q7_error.mat');
+error_time = squeeze(q7_error.ans.Time);
+error_time_350 = find(error_time == 0.3500);
+error_data = squeeze(q7_error.ans.Data);
+error_data_350 = error_data(35040);
+
+
 
 
 
