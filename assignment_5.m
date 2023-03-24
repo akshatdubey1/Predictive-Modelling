@@ -1,5 +1,5 @@
 %Script for assignment 5
-
+clear all
 %%
 %Define properties of the first simmechanics simulation
 
@@ -14,29 +14,29 @@ e_comp = 0.1e-6;%Allowable error, m
 %Setting comparison
 t_settlecomp = 200e-3; %Maximum settling time, s
 
-%PID controller
-f_bw = 80; %Bandwidth of controller, Hz
-w_bw = 2*pi*f_bw;
-
-%Defining P value
-Kp = (2*pi*f_bw)^2*M2;
-
-%Defining D value
-f_d = f_bw/3;
-w_d = 2*pi*f_d;
-T_d = 1/w_d; 
-zeta = 0.008;
-b = zeta*2*sqrt(Kp*M2);
-
-%Defining taming action (N)
-f_t = f_bw*3;
-w_t = 2*pi*f_t;
-T_t = 1/w_t;
-
-%Defining I value
-f_i = f_bw/10;
-w_i = 2*pi*f_i;
-T_i = 1/w_i;
+% %PID controller
+% f_bw = 80; %Bandwidth of controller, Hz
+% w_bw = 2*pi*f_bw;
+% 
+% %Defining P value
+% Kp = (2*pi*f_bw)^2*M2;
+% 
+% %Defining D value
+% f_d = f_bw/3;
+% w_d = 2*pi*f_d;
+% T_d = 1/w_d; 
+% zeta = 0.008;
+% b = zeta*2*sqrt(Kp*M2);
+% 
+% %Defining taming action (N)
+% f_t = f_bw*3;
+% w_t = 2*pi*f_t;
+% T_t = 1/w_t;
+% 
+% %Defining I value
+% f_i = f_bw/10;
+% w_i = 2*pi*f_i;
+% T_i = 1/w_i;
 
 
 %Limiting the actuator
@@ -68,6 +68,40 @@ error_data = squeeze(q7_error.ans.Data);
 error_data_350 = error_data(35040);
 
 
+%%
+%q9 
+x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
+f_dist = 3; %natural frequency of the system that connects frame to the fixed world, Hz
+w_dist = 2*pi*f_dist;%f_dist, rad/s
+x_error = 0.1e-6; %amplitude of allowed error, m
 
+%calculating stiffness between a) world and frame, and b) frame and lens
+K1 = M1*(w_dist^2); %stiffness between world and the frame
+
+%finding the bandwidth
+f_bw = f_dist*sqrt((x_dist/x_error));
+
+%adding damping 
+zeta_world = 0.15;
+C1 = 2*zeta_world*sqrt(K1*M1);
+
+%PID controller
+%Defining P value
+Kp = ((2*pi*f_bw)^2*M2)/3;
+
+%Defining D value
+f_d = f_bw/3;
+w_d = 2*pi*f_d;
+T_d = 1/w_d; 
+
+%Defining taming action (N)
+f_t = f_bw*3;
+w_t = 2*pi*f_t;
+T_t = 1/w_t;
+
+%Defining I value
+f_i = f_bw/10;
+w_i = 2*pi*f_i;
+T_i = 1/w_i;
 
 
