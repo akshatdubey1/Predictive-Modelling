@@ -1,9 +1,26 @@
 %%Assignment 6
 
+%Part 1
 M1=15  %Mass of the stage, kg
 K1=17e6  %Stiffness of stage, N/m
 C1=160  %Damping of stage, Ns/m
 I=0.1  %Inertia kgm2/rad
+x_stroke=250e-3; %stroke 
+
+
+%% 
+%Part 2
+M1=
+K1=
+C1=
+M2=
+K2=
+C2=
+K3=
+C3=
+
+
+
 
 
 
