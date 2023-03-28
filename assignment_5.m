@@ -124,7 +124,7 @@ f_dist = 3; %natural frequency of the system that connects frame to the fixed wo
 w_dist = 2*pi*f_dist;%f_dist, rad/s
 x_error = 0.1e-6; %amplitude of allowed error, m
 
-%calculating stiffness between a) world and frame, and b) frame and lens
+%calculating stiffness between world and frame
 K1 = M1*(w_dist^2); %stiffness between world and the frame
 
 %finding the bandwidth
@@ -133,6 +133,42 @@ f_bw = f_dist*sqrt((x_dist/x_error));
 %adding damping 
 zeta_world = 0.15;
 C1 = 2*zeta_world*sqrt(K1*M1);
+
+%q12
+
+M1 = 840; 
+x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
+f_dist = 3; %natural frequency of the system that connects frame to the fixed world, Hz
+w_dist = 2*pi*f_dist;%f_dist, rad/s
+x_error = 0.1e-6; %amplitude of allowed error, m
+
+%calculating stiffness between world and frame
+K1 = M1*(w_dist^2); %stiffness between world and the frame
+
+%finding the bandwidth
+f_bw = f_dist*sqrt((x_dist/x_error));
+
+%adding damping 
+zeta_world = 0.15;
+C1 = 2*zeta_world*sqrt(K1*M1);
+%calculating the stiffness and damping for interferometer
+M_int = 100;
+f_int = 230;
+w_int = 2*pi*f_int;
+K2 = M_int*(w_int^2);
+zeta_int = 0.01;
+C2 = 2*zeta_int*sqrt(K2*M_int);
+
+%calculating the stiffness and damping for motor
+M_mot = 50;
+f_mot = 200;
+w_mot = 2*pi*f_mot;
+K3 = M_mot*(w_mot^2);
+zeta_mot = 0.005;
+C3 = 2*zeta_mot*sqrt(K3*M_mot);
+
+%redefine the PID controller
+f_bw = 75; %uncomment to redefine
 
 %PID controller
 %Defining P value
@@ -152,5 +188,13 @@ T_t = 1/w_t;
 f_i = f_bw/10;
 w_i = 2*pi*f_i;
 T_i = 1/w_i;
+
+
+%Adding LPF
+syms s
+s = tf('s');
+f_lpf = 5*f_bw;
+w_lpf = 2*pi*f_lpf;
+lpf = 1/(1+s/w_lpf);
 
 

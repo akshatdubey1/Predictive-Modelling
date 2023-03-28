@@ -54,6 +54,8 @@ error_time_350 = find(error_time6 == 0.3500); %Find the index of 0.3500
 error_time_350 = error_time_350(1); %First 350ms index
 error_data6 = squeeze(q6_error.ans.Data); %Eliminate extra dimension of array
 error_data_350 = error_data6(error_time_350); %Error corresponding to time 0.3500
+
+
 %% 
 
 
@@ -94,7 +96,7 @@ error_time_99 = round(error_time_99,4); %Round the number to help find function
 error_time_350 = find(error_time_99 == 0.3500); %Find the index of 0.3500
 error_time_350 = error_time_350(1); %First 350ms index
 error_data_99 = squeeze(q7_error_99.ans.Data); %Eliminate extra dimension of array
-error_data_350_99 = error_data(error_time_350); %Error corresponding to time 0.3500
+error_data_350_99 = error_data_99(error_time_350); %Error corresponding to time 0.3500
 
 %For 90%
 q7_error_90 = load('q7_error_90.mat'); %Load file
@@ -103,7 +105,18 @@ error_time_90 = round(error_time_90,4); %Round the number to help find function
 error_time_350 = find(error_time_90 == 0.3500); %Find the index of 0.3500
 error_time_350 = error_time_350(1); %First 350ms index
 error_data_90 = squeeze(q7_error_90.ans.Data); %Eliminate extra dimension of array
-error_data_350_90 = error_data(error_time_350); %Error corresponding to time 0.3500
+error_data_350_90 = error_data_90(error_time_350); %Error corresponding to time 0.3500
+
+figure;
+plot(error_time_100,error_data_100); hold on;
+plot(error_time_99,error_data_99); hold on;
+plot(error_time_90,error_data_90); 
+axis([0 0.5 -1e-6 1e-6])
+title("Error of the system")
+xlabel("Time (s)")
+ylabel("Amplitute")
+
+
 %%
 %q9 
 x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
@@ -111,7 +124,7 @@ f_dist = 3; %natural frequency of the system that connects frame to the fixed wo
 w_dist = 2*pi*f_dist;%f_dist, rad/s
 x_error = 0.1e-6; %amplitude of allowed error, m
 
-%calculating stiffness between a) world and frame, and b) frame and lens
+%calculating stiffness between world and frame
 K1 = M1*(w_dist^2); %stiffness between world and the frame
 
 %finding the bandwidth
@@ -120,6 +133,42 @@ f_bw = f_dist*sqrt((x_dist/x_error));
 %adding damping 
 zeta_world = 0.15;
 C1 = 2*zeta_world*sqrt(K1*M1);
+
+%q12
+
+M1 = 840; 
+x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
+f_dist = 3; %natural frequency of the system that connects frame to the fixed world, Hz
+w_dist = 2*pi*f_dist;%f_dist, rad/s
+x_error = 0.1e-6; %amplitude of allowed error, m
+
+%calculating stiffness between world and frame
+K1 = M1*(w_dist^2); %stiffness between world and the frame
+
+%finding the bandwidth
+f_bw = f_dist*sqrt((x_dist/x_error));
+
+%adding damping 
+zeta_world = 0.15;
+C1 = 2*zeta_world*sqrt(K1*M1);
+%calculating the stiffness and damping for interferometer
+M_int = 100;
+f_int = 230;
+w_int = 2*pi*f_int;
+K2 = M_int*(w_int^2);
+zeta_int = 0.01;
+C2 = 2*zeta_int*sqrt(K2*M_int);
+
+%calculating the stiffness and damping for motor
+M_mot = 50;
+f_mot = 200;
+w_mot = 2*pi*f_mot;
+K3 = M_mot*(w_mot^2);
+zeta_mot = 0.005;
+C3 = 2*zeta_mot*sqrt(K3*M_mot);
+
+%redefine the PID controller
+f_bw = 75; %uncomment to redefine
 
 %PID controller
 %Defining P value
@@ -139,5 +188,13 @@ T_t = 1/w_t;
 f_i = f_bw/10;
 w_i = 2*pi*f_i;
 T_i = 1/w_i;
+
+
+%Adding LPF
+syms s
+s = tf('s');
+f_lpf = 10*f_bw;
+w_lpf = 2*pi*f_lpf;
+lpf = tf
 
 
