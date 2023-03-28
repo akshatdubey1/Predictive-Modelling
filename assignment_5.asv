@@ -54,8 +54,6 @@ error_time_350 = find(error_time6 == 0.3500); %Find the index of 0.3500
 error_time_350 = error_time_350(1); %First 350ms index
 error_data6 = squeeze(q6_error.ans.Data); %Eliminate extra dimension of array
 error_data_350 = error_data6(error_time_350); %Error corresponding to time 0.3500
-
-
 %% 
 
 
@@ -96,7 +94,7 @@ error_time_99 = round(error_time_99,4); %Round the number to help find function
 error_time_350 = find(error_time_99 == 0.3500); %Find the index of 0.3500
 error_time_350 = error_time_350(1); %First 350ms index
 error_data_99 = squeeze(q7_error_99.ans.Data); %Eliminate extra dimension of array
-error_data_350_99 = error_data_99(error_time_350); %Error corresponding to time 0.3500
+error_data_350_99 = error_data(error_time_350); %Error corresponding to time 0.3500
 
 %For 90%
 q7_error_90 = load('q7_error_90.mat'); %Load file
@@ -105,18 +103,7 @@ error_time_90 = round(error_time_90,4); %Round the number to help find function
 error_time_350 = find(error_time_90 == 0.3500); %Find the index of 0.3500
 error_time_350 = error_time_350(1); %First 350ms index
 error_data_90 = squeeze(q7_error_90.ans.Data); %Eliminate extra dimension of array
-error_data_350_90 = error_data_90(error_time_350); %Error corresponding to time 0.3500
-
-figure;
-plot(error_time_100,error_data_100); hold on;
-plot(error_time_99,error_data_99); hold on;
-plot(error_time_90,error_data_90); 
-axis([0 0.5 -1e-6 1e-6])
-title("Error of the system")
-xlabel("Time (s)")
-ylabel("Amplitute")
-
-
+error_data_350_90 = error_data(error_time_350); %Error corresponding to time 0.3500
 %%
 %q9 
 x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
