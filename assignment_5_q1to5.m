@@ -8,7 +8,7 @@ M2 = 10;  %Floating mass, kg
 M_t = M1+M2; %Total mass, kg
 Step = 20e-3;%Step set point signal, m
 step_t = 200e-3;%Step signal start
-
+a_step = 2
 %Error comparison
 e_comp = 0.1e-6;%Allowable error, m
 %Setting comparison
@@ -41,70 +41,57 @@ T_i = 1/w_i;
 
 %Calclulating error of q1
 step_input=load("step_input.mat");
-plant_output=load("plant_output.mat");
-
+plant_output =load("plant_output.mat")
 stepData1 = step_input.ans.Data;
 plantData1 = plant_output.ans.Data;
 plantData1 = squeeze(plantData1);
 time = step_input.ans.Time;
 error=minus(plantData1,stepData1);
 figure;
-plot(time,error)
-axis([0 10 -0.025 0.01])
+plot(time,-error)
+axis([0 0.5 -0.01 0.025])
 title("Error of the system")
 xlabel("Time (s)")
-ylabel("Amplitute")
+ylabel("Amplitute (m)")
 
 %% 
 %%Calclulating error of q2
-step_input=load("step_input_2.mat");
-plant_output=load("plant_output_2.mat");
+Q2_error=load("Error_Q2.mat");
+Q2_error_data = squeeze(Q2_error.ans.Data);
+time = Q2_error.ans.Time;
 
-stepData1 = step_input.ans.Data;
-plantData1 = plant_output.ans.Data;
-plantData1 = squeeze(plantData1);
-time = step_input.ans.Time;
-error=minus(plantData1,stepData1);
 figure;
-plot(time,error)
-axis([0 1 -0.1 inf])
+plot(time,Q2_error_data)
+axis([0 2 -0.5 2])
 title("Error of the system")
 xlabel("Time (s)")
-ylabel("Amplitute")
+ylabel("Amplitute (m)")
 
 %% 
 %Calclulating error of q3
-step_input=load("step_input_3.mat");
-plant_output=load("plant_output_3.mat");
+Q3_error=load("Error_Q3.mat");
+Q3_error_data = squeeze(Q3_error.ans.Data);
+time = Q3_error.ans.Time;
 
-stepData1 = step_input.ans.Data;
-plantData1 = plant_output.ans.Data;
-plantData1 = squeeze(plantData1);
-time = step_input.ans.Time;
-error=minus(plantData1,stepData1);
 figure;
-plot(time,error)
-axis([0 1.5 -0.025 0.02])
+plot(time,Q3_error_data)
+axis([0 2 -0.03 0.03])
 title("Error of the system")
 xlabel("Time (s)")
-ylabel("Amplitute")
+ylabel("Amplitute (m)")
 
 %% 
 %Calclulating error of q5
-step_input=load("step_input_5.mat");
-plant_output=load("plant_output_5.mat");
+Q5_error=load("Error_Q5.mat");
+Q5_error_data = squeeze(Q5_error.ans.Data);
+time = Q5_error.ans.Time;
 
-stepData1 = step_input.ans.Data;
-plantData1 = plant_output.ans.Data;
-plantData1 = squeeze(plantData1);
-time = step_input.ans.Time;
-error=minus(plantData1,stepData1);
 figure;
-plot(time,error)
-axis([0 1 -4e-5 4e-5])
+plot(time,Q5_error_data)
+axis([0 1 -40e-6 20e-6])
 title("Error of the system")
 xlabel("Time (s)")
-ylabel("Amplitute")
+ylabel("Amplitute (m)")
 
 
 

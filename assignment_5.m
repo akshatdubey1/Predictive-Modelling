@@ -44,6 +44,32 @@ T_i = 1/w_i;
 F_max = 40; %Max force of actuator, N
 t_max = 2e-3; %Fastest speed of max force, s
 Rate_limit = F_max/t_max;
+
+%% 
+%Q5 error evaluation
+Q5_error=load("Error_Q5.mat"); %Load file
+error_time5 = squeeze(Q5_error.ans.Time); %Eliminate extra dimension of array
+error_time5 = round(error_time5,4); %Round the number to help find function
+error_time_350 = find(error_time5 == 0.3500); %Find the index of 0.3500
+error_time_350 = error_time_350(1); %First 350ms index
+error_data5 = squeeze(Q5_error.ans.Data); %Eliminate extra dimension of array
+error_data_350 = error_data5(error_time_350); %Error corresponding to time 0.3500
+
+
+
+
+
+Q5_error_data = squeeze(Q5_error.ans.Data);
+time = Q5_error.ans.Time;
+
+figure;
+plot(time,Q5_error_data)
+axis([0 1 -40e-6 20e-6])
+title("Error of the system")
+xlabel("Time (s)")
+ylabel("Amplitute (m)")
+
+
 %% 
 
 %Q6 error evaluation
@@ -54,6 +80,27 @@ error_time_350 = find(error_time6 == 0.3500); %Find the index of 0.3500
 error_time_350 = error_time_350(1); %First 350ms index
 error_data6 = squeeze(q6_error.ans.Data); %Eliminate extra dimension of array
 error_data_350 = error_data6(error_time_350); %Error corresponding to time 0.3500
+
+
+time = q6_error.ans.Time;
+
+figure;
+plot(time,error_data6); hold on;
+
+Q6_error=load("q6_error.mat");
+Q6_error_data = squeeze(Q6_error.ans.Data);
+
+time = Q6_error.ans.Time;
+
+plot(time,Q6_error_data); hold on;
+Error_line = xline(0.35);
+
+[xint,yint] = intersections([0.35 0.35],[0 100],time,Q6_error_data);
+
+axis([0 0.5 -40e-6 20e-6])
+title("Error of the system")
+xlabel("Time (s)")
+ylabel("Amplitute (m)")
 
 
 %% 
@@ -111,10 +158,11 @@ figure;
 plot(error_time_100,error_data_100); hold on;
 plot(error_time_99,error_data_99); hold on;
 plot(error_time_90,error_data_90); 
-axis([0 0.5 -1e-6 1e-6])
+axis([0 0.5 -4e-6 2e-6])
 title("Error of the system")
 xlabel("Time (s)")
-ylabel("Amplitute")
+ylabel("Amplitute (m)")
+legend("100% correct", "99% correct", "90% correct")
 
 
 %%
@@ -147,6 +195,7 @@ K1 = M1*(w_dist^2); %stiffness between world and the frame
 
 %finding the bandwidth
 f_bw = f_dist*sqrt((x_dist/x_error));
+%% 
 
 %adding damping 
 zeta_world = 0.15;
@@ -168,7 +217,7 @@ zeta_mot = 0.005;
 C3 = 2*zeta_mot*sqrt(K3*M_mot);
 
 %redefine the PID controller
-f_bw = 75; %uncomment to redefine
+%f_bw = 75; %uncomment to redefine
 
 %PID controller
 %Defining P value
