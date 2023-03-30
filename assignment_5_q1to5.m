@@ -49,6 +49,7 @@ time = step_input.ans.Time;
 error=minus(plantData1,stepData1);
 figure;
 plot(time,-error)
+grid on;
 axis([0 0.5 -0.01 0.025])
 title("Error of the system")
 xlabel("Time (s)")
@@ -62,6 +63,7 @@ time = Q2_error.ans.Time;
 
 figure;
 plot(time,Q2_error_data)
+grid on;
 axis([0 2 -0.5 2])
 title("Error of the system")
 xlabel("Time (s)")
@@ -75,6 +77,7 @@ time = Q3_error.ans.Time;
 
 figure;
 plot(time,Q3_error_data)
+grid on;
 axis([0 2 -0.03 0.03])
 title("Error of the system")
 xlabel("Time (s)")
@@ -88,6 +91,7 @@ time = Q5_error.ans.Time;
 
 figure;
 plot(time,Q5_error_data)
+grid on;
 axis([0 1 -40e-6 20e-6])
 title("Error of the system")
 xlabel("Time (s)")

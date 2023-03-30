@@ -22,7 +22,7 @@ w_bw = 2*pi*f_bw;
 Kp = (2*pi*f_bw)^2*M2;
 
 %Defining D value
-f_d = f_bw/3;
+f_d = f_bw/3.33;
 w_d = 2*pi*f_d;
 T_d = 1/w_d; 
 zeta = 0.008;
@@ -38,7 +38,7 @@ f_i = f_bw/10;
 w_i = 2*pi*f_i;
 T_i = 1/w_i;
 
-
+[P, I, D, N, Kp] = PIDcode(f_bw,M2)
 %Limiting the actuator
 
 F_max = 40; %Max force of actuator, N
@@ -65,6 +65,7 @@ time = Q5_error.ans.Time;
 figure;
 plot(time,Q5_error_data)
 axis([0 1 -40e-6 20e-6])
+grid on;
 title("Error of the system")
 xlabel("Time (s)")
 ylabel("Amplitute (m)")
@@ -98,6 +99,7 @@ Error_line = xline(0.35);
 [xint,yint] = intersections([0.35 0.35],[0 100],time,Q6_error_data);
 
 axis([0 0.5 -40e-6 20e-6])
+grid on;
 title("Error of the system")
 xlabel("Time (s)")
 ylabel("Amplitute (m)")
@@ -159,13 +161,14 @@ plot(error_time_100,error_data_100); hold on;
 plot(error_time_99,error_data_99); hold on;
 plot(error_time_90,error_data_90); 
 axis([0 0.5 -4e-6 2e-6])
+grid on;
 title("Error of the system")
 xlabel("Time (s)")
 ylabel("Amplitute (m)")
 legend("100% correct", "99% correct", "90% correct")
 
 
-%%
+%% Q9/Q10 with the addded base frame and its disturbance
 %q9 
 x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
 f_dist = 3; %natural frequency of the system that connects frame to the fixed world, Hz
@@ -177,16 +180,33 @@ K1 = M1*(w_dist^2); %stiffness between world and the frame
 
 %finding the bandwidth
 f_bw = f_dist*sqrt((x_dist/x_error));
-
+[P, I, D, N, Kp] = PIDcode(f_bw,M2);
 %adding damping 
 zeta_world = 0.15;
 C1 = 2*zeta_world*sqrt(K1*M1);
 
-%q12
+Q9_error=load("q9_error.mat");
+Q9_error_data = squeeze(Q9_error.ans.Data);
+time = Q9_error.ans.Time;
+figure;
+plot(time,Q9_error_data); hold on;
+Error_line = xline(0.35);
+[xint,yint] = intersections([0.35 0.35],[0 100],time,Q9_error_data);
+axis([0 0.5 -1e-6 1e-6])
+grid on;
+title("Error of the system")
+xlabel("Time (s)")
+ylabel("Amplitute (m)")
+[Error] = ErrorEval("q9_error.mat");
+Error_Q9 = Error;
+%% Q11 
 
+
+%% Added two masses for Q12
+% The resonance is now at 200Hz for the reaction force giving 0.2mm disturbance
 M1 = 840; 
 x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
-f_dist = 3; %natural frequency of the system that connects frame to the fixed world, Hz
+f_dist = 200; %natural frequency of the system that connects frame to the fixed world, Hz
 w_dist = 2*pi*f_dist;%f_dist, rad/s
 x_error = 0.1e-6; %amplitude of allowed error, m
 
@@ -195,8 +215,7 @@ K1 = M1*(w_dist^2); %stiffness between world and the frame
 
 %finding the bandwidth
 f_bw = f_dist*sqrt((x_dist/x_error));
-%% 
-
+[P, I, D, N, Kp] = PIDcode(f_bw,M2)
 %adding damping 
 zeta_world = 0.15;
 C1 = 2*zeta_world*sqrt(K1*M1);
@@ -215,29 +234,13 @@ w_mot = 2*pi*f_mot;
 K3 = M_mot*(w_mot^2);
 zeta_mot = 0.005;
 C3 = 2*zeta_mot*sqrt(K3*M_mot);
+%[Error] = ErrorEval("q12_error.mat");
+%Error_Q12 = Error;
 
+%% Q13 set the bandwidth to 75 Hz
 %redefine the PID controller
-%f_bw = 75; %uncomment to redefine
-
-%PID controller
-%Defining P value
-Kp = ((2*pi*f_bw)^2*M2)/3;
-
-%Defining D value
-f_d = f_bw/3;
-w_d = 2*pi*f_d;
-T_d = 1/w_d; 
-
-%Defining taming action (N)
-f_t = f_bw*3;
-w_t = 2*pi*f_t;
-T_t = 1/w_t;
-
-%Defining I value
-f_i = f_bw/10;
-w_i = 2*pi*f_i;
-T_i = 1/w_i;
-
+f_bw = 75; %uncomment to redefine
+[P, I, D, N, Kp] = PIDcode(f_bw,M2)
 
 %Adding LPF
 syms s
