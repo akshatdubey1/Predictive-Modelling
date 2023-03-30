@@ -170,6 +170,9 @@ legend("100% correct", "99% correct", "90% correct")
 
 %% Q9/Q10 with the addded base frame and its disturbance
 %q9 
+M1 = 990; %Base mass,kg
+M2 = 10;  %Floating mass, kg
+M_t = M1+M2; %Total mass, kg
 x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
 f_dist = 3; %natural frequency of the system that connects frame to the fixed world, Hz
 w_dist = 2*pi*f_dist;%f_dist, rad/s
@@ -206,19 +209,19 @@ Error_Q9 = Error;
 % The resonance is now at 200Hz for the reaction force giving 0.2mm disturbance
 M1 = 840; 
 x_dist = 200e-6; %amplitude of disturbance from fixed world to the frame, m
-f_dist = 200; %natural frequency of the system that connects frame to the fixed world, Hz
+f_dist = 3; %natural frequency of the system that connects frame to the fixed world, Hz
 w_dist = 2*pi*f_dist;%f_dist, rad/s
 x_error = 0.1e-6; %amplitude of allowed error, m
 
 %calculating stiffness between world and frame
-K1 = M1*(w_dist^2); %stiffness between world and the frame
+K1 = M_t*(w_dist^2); %stiffness between world and the frame
 
 %finding the bandwidth
 f_bw = f_dist*sqrt((x_dist/x_error));
 [P, I, D, N, Kp] = PIDcode(f_bw,M2)
 %adding damping 
 zeta_world = 0.15;
-C1 = 2*zeta_world*sqrt(K1*M1);
+C1 = 2*zeta_world*sqrt(K1*M_t);
 %calculating the stiffness and damping for interferometer
 M_int = 100;
 f_int = 230;
@@ -241,11 +244,32 @@ C3 = 2*zeta_mot*sqrt(K3*M_mot);
 %redefine the PID controller
 f_bw = 75; %uncomment to redefine
 [P, I, D, N, Kp] = PIDcode(f_bw,M2)
+%% 
+
+
+%Defining P value
+Kp = (2*pi*f_bw)^2*M2;
+
+%Defining D value
+f_d = f_bw/3;
+w_d = 2*pi*f_d;
+T_d = 1/w_d; 
+
+%Defining taming action (N)
+f_t = f_bw*3;
+w_t = 2*pi*f_t;
+T_t = 1/w_t;
+
+%Defining I value
+f_i = f_bw/10;
+w_i = 2*pi*f_i;
+T_i = 1/w_i;
 
 %Adding LPF
 syms s
+
 s = tf('s');
-f_lpf = 5*f_bw;
+f_lpf = f_bw+10;
 w_lpf = 2*pi*f_lpf;
 lpf = 1/(1+s/w_lpf);
 
