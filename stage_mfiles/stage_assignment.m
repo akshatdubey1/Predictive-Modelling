@@ -18,15 +18,16 @@ d = 0.08; % [m] horizontal separation of springs
 b = 0.09; % [m] vertical separation of CoGs
 
 
+
+%Optimal system 
 a=0.00
 F = 0.12815; % [m] vertical position of force relative to motor CoG
 o = 0.14575-0.09
-%o=-0.9-0.15
-%o = 0.057
+
 %original settings
-%a = 0 
-%F=0.06;
-%o=0.03;
+a = 0 
+F=0.06;
+o=0.03;
 stage_modes;
 
 stage_transfer;
