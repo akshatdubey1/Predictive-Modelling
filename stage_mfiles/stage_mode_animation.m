@@ -79,7 +79,8 @@ while 1
         set(la, 'xdata', Xai+C(i)*M(4));
         Yai = get(la, 'Ydata');
         set(la, 'ydata', Yai+C(i)*M(5));
-        
+        grid on;
+  
         drawnow
         pause(.01)
         
