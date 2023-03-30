@@ -16,6 +16,10 @@ load dispXactuator.txt
 load dispXsensor.txt
 load dispYsensor.txt
 load dispZsensor.txt
+load dispZsensor_boss.txt
+load dispXsensor_boss.txt
+ModalMasses = load ('ModalMasses_boss.txt'); 
+dispXactuator = load('dispXactuator_boss.txt');
 
 %%
 n = size(ModalMasses,1);        % number of modes
@@ -28,11 +32,20 @@ c = sqrt(m.*k)/Q;               % damping
 % displacement in X of actuator block: you can take the average of the two
 % points measured and 
 Xa = sum(dispXactuator(:,2:3),2)/2;
-
+Xa(1) = 1e-4
 % displacement in Z of measurement node. In this case I took node 1, with
 % the data provided you can choose different nodes, and by combining them
 % you can obtain rotations in the YZ plane.
-Zs = dispZsensor(:,2);
+X1 = dispXsensor_boss(:,2);
+Z1 = dispZsensor_boss(:,2);
+Z2 = dispZsensor_boss(:,3);
+Zyes = Z1+Z2;
+%Zmin = min(abs(Z1),abs(Z2));
+Zs = min(abs(X1),abs(Zyes));
+Zs(6) = Zs(6)/10;
+%Zs = X1; 
+%Zs = Z1+Z1
+%% 
 
 % calculate effective masses and stiffnesses. These can become negative due
 % to the movement of the actuator and sensor point being out of phase.
@@ -49,6 +62,7 @@ p.Grid = 'on';
 p.FreqUnits = 'Hz';
 p.MagUnits = 'abs';
 p.MagScale = 'log';
+p.XLim = {[0,10]};
 
 %% calculate modal masses
 for i = 1:n
@@ -67,8 +81,8 @@ title('All modes');
 
 %% Calculate norm
 for i = 1:n
-    normM(i) = norm( M(i), 2);
-%    normM(i) = norm( M(i), inf);
+%     normM(i) = norm( M(i), 2);
+    normM(i) = norm( M(i), inf);
 end
 
 %% Plot tranfer attenuated with actuator arm
@@ -141,7 +155,6 @@ f7 = figure(7); hold on;
 bodeplot(P,p);
 bodeplot(PT,'r',p);
 legend(sprintf('%i modes',n), sprintf('%i biggest modes with f < %i [Hz]',maxi,fmax));
-
 %% calculate different norms
 for i = 1:n
     normM(i) = norm(M(i),2);

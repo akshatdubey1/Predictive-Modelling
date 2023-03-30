@@ -1,6 +1,9 @@
 clear all; close all; clc
 
-place the sensor at a more sensible location, for example the ce
+% place the sensor at a more sensible location, for example the centre and then
+% get data from that simulation again and run this script, know which mode starts
+% fucking up the sensor and limit the code accordingly. once that fuckup frequency is 
+% known, then design a PID controller for 1/3 bandwidth of that frequency. 
 
 % This file will load the modal data from the COMSOL model. It will then
 % plot the tranfer from the actuator location to one of the nodes on the
@@ -36,6 +39,7 @@ Xa = sum(dispXactuator(:,2:3),2)/2;
 % the data provided you can choose different nodes, and by combining them
 % you can obtain rotations in the YZ plane.
 Zs = dispZsensor(:,2);
+
 
 % calculate effective masses and stiffnesses. These can become negative due
 % to the movement of the actuator and sensor point being out of phase.
@@ -146,7 +150,8 @@ f4 = figure();
 %% Only modes with biggest norm
 
 for i = 2:n
-    normM(i) = norm(M(i),2);
+    %normM(i) = norm(M(i),2);
+    normM(i) = norm(M(i),inf);         %norm infinity
 end
 
 [Y I] = sort(normM, 'descend');
