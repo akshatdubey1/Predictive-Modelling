@@ -1,6 +1,13 @@
 %Script for assignment 5
 clear all
 %%
+
+opts = bodeoptions("cstprefs");
+opts.FreqUnits = ('Hz');
+opts.MagUnits = ('abs');
+opts.Grid = ('on');
+opts.MagScale = ('log');
+
 %Define properties of the first simmechanics simulation
 
 M1 = 990; %Base mass,kg
@@ -179,7 +186,7 @@ w_dist = 2*pi*f_dist;%f_dist, rad/s
 x_error = 0.1e-6; %amplitude of allowed error, m
 
 %calculating stiffness between world and frame
-K1 = M1*(w_dist^2); %stiffness between world and the frame
+K1 = M_t*(w_dist^2); %stiffness between world and the frame
 
 %finding the bandwidth
 f_bw = f_dist*sqrt((x_dist/x_error));
@@ -188,14 +195,14 @@ f_bw = f_dist*sqrt((x_dist/x_error));
 zeta_world = 0.15;
 C1 = 2*zeta_world*sqrt(K1*M1);
 
-Q9_error=load("q9_error.mat");
-Q9_error_data = squeeze(Q9_error.ans.Data);
-time = Q9_error.ans.Time;
+[Error,error_time,error_data] = ErrorEval("Q10_error.mat");
+Error_Q10 = Error;
+Error_Q10_time=error_time;
+Error_Q10_data = error_data;
 figure;
-plot(time,Q9_error_data); hold on;
+plot(Error_Q10_time,Error_Q10_data); hold on;
 Error_line = xline(0.35);
-[xint,yint] = intersections([0.35 0.35],[0 100],time,Q9_error_data);
-axis([0 0.5 -1e-6 1e-6])
+axis([0 1 -2e-7 2e-7])
 grid on;
 title("Error of the system")
 xlabel("Time (s)")
@@ -203,7 +210,13 @@ ylabel("Amplitute (m)")
 [Error] = ErrorEval("q9_error.mat");
 Error_Q9 = Error;
 %% Q11 
-
+Linearizer_Q11 = load("Q11_linsys.mat");
+Q11_linsys = Linearizer_Q11.LinearAnalysisToolProject.Results(1).Data.Value;
+h1 = nyquistplot(Q11_linsys);
+setoptions(h1, 'ShowFullContour', 'off');
+grid on;
+xlim([-3 2]);
+ylim([-3 1]);
 
 %% Added two masses for Q12
 % The resonance is now at 200Hz for the reaction force giving 0.2mm disturbance
@@ -237,40 +250,115 @@ w_mot = 2*pi*f_mot;
 K3 = M_mot*(w_mot^2);
 zeta_mot = 0.005;
 C3 = 2*zeta_mot*sqrt(K3*M_mot);
-%[Error] = ErrorEval("q12_error.mat");
-%Error_Q12 = Error;
 
+[Error,error_time,error_data] = ErrorEval("Q12_error.mat");
+Error_Q12 = Error;
+Error_Q12_time=error_time;
+Error_Q12_data = error_data;
+
+figure;
+plot(Error_Q12_time,Error_Q12_data);
+%Error_line = xline(0.35);
+axis([0 1 -1e-6 1e-6])
+grid on;
+title("Error of the system")
+xlabel("Time (s)")
+ylabel("Amplitute (m)")
+
+Linearizer_Q12 = load("Q12_linsys.mat");
+%First data is Q12, second is Q13 system with 75Hz bandwidth
+Q12_linsys = Linearizer_Q12.LinearAnalysisToolProject.Results(1).Data.Value;
+figure;
+h1 = nyquistplot(Q12_linsys);
+setoptions(h1, 'ShowFullContour', 'off');
+grid on;
+xlim([-3 2]);
+ylim([-3 2]);
 %% Q13 set the bandwidth to 75 Hz
 %redefine the PID controller
 f_bw = 75; %uncomment to redefine
 [P, I, D, N, Kp] = PIDcode(f_bw,M2)
+
+[Error,error_time,error_data] = ErrorEval("Q13_error.mat");
+Error_Q13 = Error;
+Error_Q13_time=error_time;
+Error_Q13_data = error_data;
+
+figure;
+plot(Error_Q13_time,Error_Q13_data);
+%Error_line = xline(0.35);
+axis([0 1 -1e-6 1e-6])
+grid on;
+title("Error of the system")
+xlabel("Time (s)")
+ylabel("Amplitute (m)")
+
+
+Q13_linsys = Linearizer_Q12.LinearAnalysisToolProject.Results(2).Data.Value;
+figure;
+h1 = nyquistplot(Q13_linsys);
+setoptions(h1, 'ShowFullContour', 'off');
+grid on;
+xlim([-3 2]);
+ylim([-3 2]);
 %% 
-
-
-%Defining P value
-Kp = (2*pi*f_bw)^2*M2;
-
-%Defining D value
-f_d = f_bw/3;
-w_d = 2*pi*f_d;
-T_d = 1/w_d; 
-
-%Defining taming action (N)
-f_t = f_bw*3;
-w_t = 2*pi*f_t;
-T_t = 1/w_t;
-
-%Defining I value
-f_i = f_bw/10;
-w_i = 2*pi*f_i;
-T_i = 1/w_i;
-
 %Adding LPF
 syms s
 
 s = tf('s');
-f_lpf = f_bw+10;
+f_lpf = f_bw*3;
 w_lpf = 2*pi*f_lpf;
+%First order lpf
 lpf = 1/(1+s/w_lpf);
+%Second order lpf
+Q = 0.5
+%lpf = 1/((s/(w_lpf))^2+s/(Q*w_lpf)+1)
+lpf2 = 1/(1+s/w_lpf)^2;
+%% Q14 testing various lpfs to improve performance
 
 
+[Error,error_time,error_data] = ErrorEval("Q13_lpf_10.mat");
+Error_Q13_lpf10 = Error;
+Error_Q13_lpf10_time=error_time;
+Error_Q13_lpf10_data = error_data;
+
+[Error,error_time,error_data] = ErrorEval("Q13_lpf_5.mat");
+Error_Q13_lpf5 = Error;
+Error_Q13_lpf5_time=error_time;
+Error_Q13_lpf5_data = error_data;
+
+[Error,error_time,error_data] = ErrorEval("Q13_lpf_bw.mat");
+Error_Q13_lpfbw = Error;
+Error_Q13_lpfbw_time=error_time;
+Error_Q13_lpfbw_data = error_data;
+
+[Error,error_time,error_data] = ErrorEval("Q13_lpf2_5.mat");
+Error_Q13_lpf2_5 = Error;
+Error_Q13_lpf2_5_time=error_time;
+Error_Q13_lpf2_5_data = error_data;
+
+[Error,error_time,error_data] = ErrorEval("Q13_lpf2_10.mat");
+Error_Q13_lpf2_10 = Error;
+Error_Q13_lpf2_10_time=error_time;
+Error_Q13_lpf2_10_data = error_data;
+
+[Error,error_time,error_data] = ErrorEval("Q13_lpf2_3.mat");
+Error_Q13_lpf2_3 = Error;
+Error_Q13_lpf2_3_time=error_time;
+Error_Q13_lpf2_3_data = error_data;
+
+figure;
+plot(Error_Q13_lpf10_time,Error_Q13_lpf10_data); hold on;
+plot(Error_Q13_lpf5_time,Error_Q13_lpf5_data); hold on;
+plot(Error_Q13_lpfbw_time,Error_Q13_lpfbw_data); hold on;
+plot(Error_Q13_lpf2_3_time,Error_Q13_lpf2_3_data); hold on;
+plot(Error_Q13_lpf2_5_time,Error_Q13_lpf2_5_data); hold on;
+plot(Error_Q13_lpf2_10_time,Error_Q13_lpf2_10_data); hold on;
+
+Error_line = xline(0.35);
+axis([0 0.5 -1e-6 1e-6])
+grid on;
+title("Error of the system")
+xlabel("Time (s)")
+ylabel("Amplitute (m)")
+legend("first order 10bw","first order 5bw", "first order bw","second order 3bw","second order 5bw","second order 10bw")

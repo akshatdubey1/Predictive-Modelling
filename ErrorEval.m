@@ -1,4 +1,4 @@
-function [Error] = ErrorEval(Filename)
+function [Error,error_time,error_data] = ErrorEval(Filename)
 
 Error_output=load(Filename);
 error_time = squeeze(Error_output.ans.Time); %Eliminate extra dimension of array
