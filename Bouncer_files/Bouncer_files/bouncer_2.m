@@ -11,15 +11,27 @@ clear all; close all; clc
 % frequencies (in Hz). To get the displacement in X,Y or Z of the nodes
 % on the sensor block, you need to take colum 'node-number+1', with node
 % numbers as indicated in the figure.
-load ModalMasses.txt
-load dispXactuator.txt
-load dispXsensor.txt
-load dispYsensor.txt
-load dispZsensor.txt
-load dispZsensor_boss.txt
-load dispXsensor_boss.txt
-ModalMasses = load ('ModalMasses_boss.txt'); 
-dispXactuator = load('dispXactuator_boss.txt');
+% ModalMasses = load ('nyitt_ModalMasses.txt');
+% dispXactuator = load ('nyitt_dispXactuator.txt');
+% dispXsensor1 = load ('nyitt_dispXsensor1.txt');
+% dispXsensor2 = load ('nyitt_dispXsensor2.txt');
+% dispXsensor3 = load ('nyitt_dispXsensor3.txt');
+% dispYsensor1 = load ('nyitt_dispYsensor1.txt');
+% dispYsensor2 = load ('nyitt_dispYsensor2.txt');
+% dispYsensor3 = load ('nyitt_dispYsensor3.txt');
+% dispZsensor1 = load ('nyitt_dispZsensor1.txt');
+% dispZsensor2 = load ('nyitt_dispZsensor2.txt');
+% dispZsensor3 = load ('nyitt_dispZsensor3.txt');
+
+ModalMasses = load ('new_ModalMasses.txt');
+dispXactuator = load ('new_dispXactuator.txt');
+dispXsensor = load ('new_dispXsensor.txt');
+dispYsensor = load ('new_dispYsensor.txt');
+dispZsensor = load ('new_dispZsensor.txt');
+
+%s1 - :,2
+%s2 - :,4
+%s3 - :,2
 
 %%
 n = size(ModalMasses,1);        % number of modes
@@ -31,21 +43,27 @@ c = sqrt(m.*k)/Q;               % damping
 
 % displacement in X of actuator block: you can take the average of the two
 % points measured and 
+
 Xa = sum(dispXactuator(:,2:3),2)/2;
-Xa(1) = 1e-4
+
 % displacement in Z of measurement node. In this case I took node 1, with
 % the data provided you can choose different nodes, and by combining them
 % you can obtain rotations in the YZ plane.
-X1 = dispXsensor_boss(:,2);
-Z1 = dispZsensor_boss(:,2);
-Z2 = dispZsensor_boss(:,3);
-Zyes = Z1+Z2;
-%Zmin = min(abs(Z1),abs(Z2));
-Zs = min(abs(X1),abs(Zyes));
-Zs(6) = Zs(6)/10;
-%Zs = X1; 
-%Zs = Z1+Z1
-%% 
+
+% Z1 = dispZsensor1(:,2);
+% Y1 = dispYsensor1(:,2);
+% X2 = dispXsensor2(:,4);
+% Z3 = dispZsensor3(:,2);
+% Y3 = dispYsensor3(:,2);
+% 
+% rot1 = (-(atan(Z1./Y1)));
+% rot3 = (atan(Z3./Y3));
+% 
+% diff_rot = rot1+rot3;
+
+
+Zs = dispXsensor(:,4); %Zs is the final variable that the calculated displacement should be equated to 
+%%
 
 % calculate effective masses and stiffnesses. These can become negative due
 % to the movement of the actuator and sensor point being out of phase.
@@ -81,8 +99,8 @@ title('All modes');
 
 %% Calculate norm
 for i = 1:n
-%     normM(i) = norm( M(i), 2);
-    normM(i) = norm( M(i), inf);
+   normM(i) = norm( M(i), 2);
+%     normM(i) = norm( M(i), inf);
 end
 
 %% Plot tranfer attenuated with actuator arm
@@ -135,7 +153,7 @@ legend(sprintf('%i modes',n), sprintf('%i modes',maxi), sprintf('Next mode: %i',
     
 %% Truncated model: maxi Modes with biggest norm and frequency < 5000 Hz
 maxi = 4;
-fmax = 5000;            % maximum frequency to consider in truncated model
+fmax = 1000;            % maximum frequency to consider in truncated model
 
 PT = tf(0,1);           % initiate truncated model tranfer
 k = 1;

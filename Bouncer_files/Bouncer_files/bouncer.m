@@ -17,29 +17,29 @@ clear all; close all; clc
 % frequencies (in Hz). To get the displacement in X,Y or Z of the nodes
 % on the sensor block, you need to take colum 'node-number+1', with node
 % numbers as indicated in the figure.
-load ModalMasses_alt.txt
-load dispXactuator_alt.txt
+load ModalMasses.txt
+load dispXactuator.txt
 load dispXsensor.txt
 load dispYsensor.txt
-load dispZsensor_alt3.txt
+load dispZsensor.txt
 
 %%
-n = size(ModalMasses_alt,1);        % number of modes
-f = ModalMasses_alt(:,1);           % eigen frequencies
-m = ModalMasses_alt(:,2);           % modal masses
+n = size(ModalMasses,1);        % number of modes
+f = ModalMasses(:,1);           % eigen frequencies
+m = ModalMasses(:,2);           % modal masses
 k = m.*(f*2*pi).^2;             % modal stiffnesses
 Q = 2e2;                        % quality factor of resonances
 c = sqrt(m.*k)/Q;               % damping
 
 % displacement in X of actuator block: you can take the average of the two
 % points measured and 
-Xa = sum(dispXactuator_alt(:,2:3),2)/2;
+Xa = sum(dispXactuator(:,2:3),2)/2;
 
 % displacement in Z of measurement node. In this case I took node 1, with
 % the data provided you can choose different nodes, and by combining them
 % you can obtain rotations in the YZ plane.
 %Zs = sum(dispZsensor_alt3(:,2:3),2)/2;
-%Zs = dispZsensor_alt2(:,2);
+Zs = dispZsensor(:,2);
 %Zs = dispYsensor(:,2);
 
 
