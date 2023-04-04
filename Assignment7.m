@@ -18,3 +18,12 @@ I2 = 0.2;                %[kgm2], moment of inertia of the stage motors
 
 d1 = 25e-3;              %[m], distance from center of m3 to sensor
 d2 = 250e-3;             %[m], distance from middle of m3 to m2 and m4
+
+
+%% Q3
+% P controller
+f_bw = 100;              %[Hz], bandwidth of the controller
+
+[P, I, D, N, Kp] = PIDcode(f_bw,m1);
+
+
