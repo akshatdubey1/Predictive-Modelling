@@ -153,7 +153,7 @@ legend(sprintf('%i modes',n), sprintf('%i modes',maxi), sprintf('Next mode: %i',
     
 %% Truncated model: maxi Modes with biggest norm and frequency < 5000 Hz
 maxi = 4;
-fmax = 1000;            % maximum frequency to consider in truncated model
+fmax = 5000;            % maximum frequency to consider in truncated model
 
 PT = tf(0,1);           % initiate truncated model tranfer
 k = 1;
@@ -179,4 +179,20 @@ for i = 1:n
     normAM(i) = norm(Xa(i)*M(i),2);
     normSAM(i) = norm(Zs(i)*Xa(i)*M(i),2);
 end
+
+transfer1 = M(I(1));
+transfer2 = M(I(2));
+transfer3 = M(I(3));
+transfer4 = M(I(4));
+
+Zs1 = Zs(I(1));
+Zs2 = Zs(I(2));
+Zs3 = Zs(I(3));
+Zs4 = Zs(I(4));
+
+Xa1 = Xa(I(1));
+Xa2 = Xa(I(2));
+Xa3 = Xa(I(3));
+Xa4 = Xa(I(4));
+
 

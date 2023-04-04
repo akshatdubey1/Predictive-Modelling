@@ -24,16 +24,10 @@ clear all; close all; clc
 % dispZsensor3 = load ('nyitt_dispZsensor3.txt');
 
 ModalMasses = load ('new_ModalMasses.txt');
-dispXactuator = load ('nyitt_dispXactuator.txt');
-dispXsensor1 = load ('nyitt_dispXsensor1.txt');
-dispXsensor2 = load ('nyitt_dispXsensor2.txt');
-dispXsensor3 = load ('nyitt_dispXsensor3.txt');
-dispYsensor1 = load ('nyitt_dispYsensor1.txt');
-dispYsensor2 = load ('nyitt_dispYsensor2.txt');
-dispYsensor3 = load ('nyitt_dispYsensor3.txt');
-dispZsensor1 = load ('nyitt_dispZsensor1.txt');
-dispZsensor2 = load ('nyitt_dispZsensor2.txt');
-dispZsensor3 = load ('nyitt_dispZsensor3.txt');
+dispXactuator = load ('new_dispXactuator.txt');
+dispXsensor = load ('new_dispXsensor.txt');
+dispYsensor = load ('new_dispYsensor.txt');
+dispZsensor = load ('new_dispZsensor.txt');
 
 %s1 - :,2
 %s2 - :,4
@@ -68,7 +62,7 @@ Xa = sum(dispXactuator(:,2:3),2)/2;
 % diff_rot = rot1+rot3;
 
 
-Zs = dispXsensor2(:,4); %Zs is the final variable that the calculated displacement should be equated to 
+Zs = dispXsensor(:,4); %Zs is the final variable that the calculated displacement should be equated to 
 %%
 
 % calculate effective masses and stiffnesses. These can become negative due
@@ -105,8 +99,8 @@ title('All modes');
 
 %% Calculate norm
 for i = 1:n
-%     normM(i) = norm( M(i), 2);
-    normM(i) = norm( M(i), inf);
+   normM(i) = norm( M(i), 2);
+%     normM(i) = norm( M(i), inf);
 end
 
 %% Plot tranfer attenuated with actuator arm
@@ -186,3 +180,10 @@ for i = 1:n
     normSAM(i) = norm(Zs(i)*Xa(i)*M(i),2);
 end
 
+transfer1 = M(I(1));
+transfer2 = M(I(2));
+transfer3 = M(I(3));
+transfer4 = M(I(4));
+
+
+hlesru worfas
