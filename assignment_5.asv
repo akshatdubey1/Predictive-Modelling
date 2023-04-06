@@ -311,7 +311,7 @@ f_lpf = f_bw*10;
 f_lpf = 195;
 w_lpf = 2*pi*f_lpf;
 %First order lpf
-lpf = 1/(1+s/w_lpf);
+lpf = 1/(1+s/w_lpf);sss
 %Second order lpf
 Q = 0.5;
 %lpf = 1/((s/(w_lpf))^2+s/(Q*w_lpf)+1)
@@ -330,9 +330,9 @@ Error_Q13_lpf5_time=error_time;
 Error_Q13_lpf5_data = error_data;
 
 [Error,error_time,error_data] = ErrorEval("Q13_lpf_3.mat");
-Error_Q13_lpf3 = Error;
-Error_Q13_lpf3_time=error_time;
-Error_Q13_lpf3_data = error_data;
+Error_Q13_lpfbw = Error;
+Error_Q13_lpfbw_time=error_time;
+Error_Q13_lpfbw_data = error_data;
 
 [Error,error_time,error_data] = ErrorEval("Q13_lpf2_5.mat");
 Error_Q13_lpf2_5 = Error;
@@ -354,7 +354,7 @@ Error_Q13_lpf2_3_2_data = error_data;
 figure;
 plot(Error_Q13_lpf10_time,Error_Q13_lpf10_data); hold on;
 plot(Error_Q13_lpf5_time,Error_Q13_lpf5_data); hold on;
-plot(Error_Q13_lpf3_time,Error_Q13_lpf3_data); hold on;
+plot(Error_Q13_lpfbw_time,Error_Q13_lpfbw_data); hold on;
 plot(Error_Q13_lpf2_3_2_time,Error_Q13_lpf2_3_2_data); hold on; %Something going on here.
 plot(Error_Q13_lpf2_5_time,Error_Q13_lpf2_5_data); hold on;
 plot(Error_Q13_lpf2_10_time,Error_Q13_lpf2_10_data); hold on;
