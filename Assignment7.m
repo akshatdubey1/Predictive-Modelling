@@ -22,7 +22,7 @@ d2 = 250e-3;             %[m], distance from middle of m3 to m2 and m4
 
 %% Q3
 % P controller
-f_bw = 50;              %[Hz], bandwidth of the controller
+f_bw = 100;              %[Hz], bandwidth of the controller
 
 [P, I, D, N, Kp] = PIDcode(f_bw,m1);
 
