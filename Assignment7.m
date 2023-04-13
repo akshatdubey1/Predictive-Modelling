@@ -14,7 +14,7 @@ k_rot = 2e4;             %[Nm/rad],  rotational stiffness
 c_rot = 2;               %[Nms/rad], rotational damping
 
 I1 = 0.1;                %[kgm2], moment of inertia of the stage
-I2 = 0.2;                %[kgm2], moment of inertia of the stage motors
+I2 = 0.02;                %[kgm2], moment of inertia of the stage motors
 
 d1 = 25e-3;              %[m], distance from center of m3 to sensor
 d2 = 250e-3;             %[m], distance from middle of m3 to m2 and m4
