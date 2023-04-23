@@ -27,14 +27,20 @@ f_bw = 100;              %[Hz], bandwidth of the controller
 [P, I, D, N, Kp] = PIDcode(f_bw,m1);
 
 
-%% Q12
+% Q12
 
 m5 = 5;                  %[kg], masses in part 5  
 
-k_rot_2 = 10^6;             %[Nm/rad],  rotational stiffness
-c_rot_2 = 5;               %[Nms/rad], rotational damping
+k_rot_2 = 10^6;          %[Nm/rad],  rotational stiffness
+c_rot_2 = 5;             %[Nms/rad], rotational damping
 
 
-k_lin = 30e6;             %[Nm/rad],  rotational stiffness
-c_lin = 300;               %[Nms/rad], rotational damping
+k_lin = 30e6;             %[Nm],  linear stiffness
+c_lin = 300;              %[Nms], linear damping
 
+syms s
+s = tf('s');
+w_lpf = 10*f_bw*2*pi;
+%w_lpf = 3000;
+lpf = 1/(1+s/w_lpf)
+lpf = 1;
