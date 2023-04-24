@@ -22,4 +22,5 @@ T=[1 -s1;
 
 M_mod = inv(F)*M*inv(T);
 C_mod = inv(F)*C*inv(T);
-K_mod = inv(F)*K*inv(T);    
+K_mod = inv(F)*K*inv(T); 
+
