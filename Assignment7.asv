@@ -40,6 +40,7 @@ c_lin = 300;              %[Nms], linear damping
 
 syms s
 s = tf('s');
-w_lpf = 3*f_bw*2*pi;
+w_lpf = 10*f_bw*2*pi;
 %w_lpf = 3000;
 lpf = 1/(1+s/w_lpf)
+lpf = 1;

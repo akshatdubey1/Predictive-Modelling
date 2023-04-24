@@ -86,12 +86,12 @@ ylabel("Amplitute (m)")
 
 %Plotting all together
 figure;
-plot(Error_1_Q3_time,Error_1_Q3_data,"LineStyle","--",'Color',"r"); hold on;
-plot(Error_2_Q3_time,Error_2_Q3_data,'Color',"r"); hold on;
-%plot(Error_1_Q4_d01_time,Error_1_Q4_d01_data,"LineStyle","--",'Color',"k"); hold on;
-%plot(Error_2_Q4_d01_time,Error_2_Q4_d01_data,'Color',"k"); hold on;
-%plot(Error_1_Q4_d1_time,Error_1_Q4_d1_data,"LineStyle","--",'Color',"b"); hold on;
-%plot(Error_2_Q4_d1_time,Error_2_Q4_d1_data,'Color',"b"); hold on;
+plot(Error_1_Q3_time,Error_1_Q3_data, "--",'Color',"r"); hold on;
+plot(Error_2_Q3_time,Error_2_Q3_data,"r"); hold on;
+plot(Error_1_Q4_d01_time,Error_1_Q4_d01_data,"--","k"); hold on;
+plot(Error_2_Q4_d01_time,Error_2_Q4_d01_data,"k"); hold on;
+plot(Error_1_Q4_d1_time,Error_1_Q4_d1_data,"--","b"); hold on;
+plot(Error_2_Q4_d1_time,Error_2_Q4_d1_data,"b"); hold on;
 title("Error of the system")
 xlabel("Time (s)")
 ylabel("Amplitute (m)")
