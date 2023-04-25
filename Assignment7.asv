@@ -6,7 +6,7 @@ m1=20;                   % [kg], moving mass in y
 F=40;                    % [N],  max fore per actuator
 
 %Model setup
-m2 = 5;                  %[kg], left mass, linear motor
+m2 = 7;                  %[kg], left mass, linear motor
 m3 = 10;                 %[kg], center mass, stage
 m4 = 5;                  %[kg], right mass, linear motor    
 

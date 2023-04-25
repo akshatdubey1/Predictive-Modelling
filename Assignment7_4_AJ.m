@@ -81,7 +81,7 @@ Ys = inv(EOM_M)*F
 Ys = simplify(Ys);
 
 % %Retrieve numerator and denominator for transfer functions
-force = [40 39]
+force = [1 1]
 %Ys = simplify(Ys)
 n1 = [force(1)*9-force(2)*1 force(1)*80+force(2)*80  force(1)*800000+force(2)*800000];
 n2 = [force(1)*9-force(2)*1 force(1)*80+force(2)*80  force(1)*800000+force(2)*800000];
