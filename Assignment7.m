@@ -23,7 +23,7 @@ d2 = 250e-3;             %[m], distance from middle of m3 to m2 and m4
 
 %% Q3
 % P controller
-f_bw = 100;              %[Hz], bandwidth of the controller
+f_bw = 2500;              %[Hz], bandwidth of the controller
 
 [P, I, D, N, Kp] = PIDcode(f_bw,m1);
 
@@ -43,9 +43,11 @@ c_lin = 300;              %[Nms], linear damping
 syms s
 s = tf('s');
 w_lpf = 10*f_bw*2*pi;
-%w_lpf = 3000;
+%w_lpf = 3000*2*pi;
 lpf = 1/(1+s/w_lpf)
-lpf = 1;
+%Second order filter
+%lpf = 1/(1+s/w_lpf)^2;
+%lpf = 1; %DO NOT UNCOMMENT UNLESS YOU COMMENT AGAIN AFTERWARDS - AJ
 
 
 %%
